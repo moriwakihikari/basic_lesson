@@ -1,13 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect} from 'react';
 import { Counter } from './features/counter/Counter';
 import './App.css';
+import CleanUp from './CleanUp';
 
-function App() {
+const App: React.FC = () => {
+  const [status, setStatus] = useState<string | number>("text");
+  const [input, setInput] = useState<string>("");
+  const [counter, setCounter] = useState<number>(0);
+  const [display, setDisplay] = useState<boolean>(true);
+
+  const onChangeHandler =(e:React.ChangeEvent<HTMLInputElement>) =>{
+    setInput(e.target.value)
+  }
+  useEffect(()=>{
+    console.log("useEffect in App invoked !");
+    document.title = `current value is ${counter}`;//タイトル
+  },[counter]);
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <h4>{status}</h4>
+        <button onClick={() => setStatus(1)}>Button</button>
+        <h4>{input}</h4>
+        <input type="text" value={input} onChange={onChangeHandler}/>
+        <h4>{counter}</h4>
+        <button onClick={() => setCounter((preCounter) => preCounter+1)}>
+          Increment
+        </button>
+        {display && <CleanUp />}
+        <button onClick={() => setDisplay(!display)}>Toggle display</button>
         <Counter />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
